@@ -93,6 +93,7 @@ public:
     READY_STATE_ERROR = 3U
   };
   uint16_t ReadyState() const;
+  void SetReadyState(uint16_t aReadyState);
 
   TextTrack* Track();
 
@@ -146,6 +147,7 @@ protected:
   nsRefPtr<WebVTTListener> mListener;
 
   void CreateTextTrack();
+  void DispatchTrustedEvent(const nsAString& aName);
 };
 
 } // namespace dom

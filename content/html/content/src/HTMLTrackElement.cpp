@@ -323,5 +323,32 @@ HTMLTrackElement::ReadyState() const
   return mTrack->ReadyState();
 }
 
+void
+HTMLTrackElement::SetReadyState(uint16_t aReadyState)
+{
+  if (mTrack) {
+    switch (aReadyState) {
+      case READY_STATE_LOADED:
+        DispatchTrustedEvent(NS_LITERAL_STRING("loaded"));
+        break;
+      case READY_STATE_ERROR:
+        DispatchTrustedEvent(NS_LITERAL_STRING("error"));
+        break;
+    }
+    mTrack->SetReadyState(aReadyState);
+  }
+}
+
+void
+HTMLTrackElement::DispatchTrustedEvent(const nsAString& aName)
+{
+  nsIDocument* doc = OwnerDoc();
+  if (!doc) {
+    return;
+  }
+  nsContentUtils::DispatchTrustedEvent(doc, static_cast<nsIContent*>(this),
+                                       aName, false, false);
+}
+
 } // namespace dom
 } // namespace mozilla
