@@ -43,6 +43,10 @@ WebVTTParserWrapper.prototype =
   {
     this.parser.oncue = callback.onCue;
     this.parser.onregion = callback.onRegion;
+    this.parser.onparsingerror = function(e) {
+      // Passing the just the error code back is enough for our needs.
+      callback.onParsingError(e.code || -1);
+    };
   },
 
   convertCueToDOMTree: function(window, cue)
